@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>the top news</title>
+  <style>
+    .code-block {
+      background-color: #1e1e1e;
+      color: #dcdcdc;
+      padding: 15px;
+      margin-bottom: 10px;
+      border-radius: 8px;
+      font-family: monospace;
+      cursor: pointer;
+      position: relative;
+    }
+    .notification {
+      display: none;
+      position: absolute;
+      top: 30px;
+      right: 10px;
+      background-color: #4caf50;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 5px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="code-block" id="codeBlock">
+  <h1># Distributive</h1>
+  <pre>
+def distributive_law(a, b, c):
+    left_side = a * (b + c)
+    right_side = (a * b) + (a * c)
+    return left_side, right_side
+
+# Test values
+a, b, c = 2, 3, 4
+
+results = distributive_law(a, b, c)
+
+print("Left Side:", results[0])
+print("Right Side:", results[1])
+  </pre>
+  <span class="notification" id="notification">Copied!</span>
+</div>
+
+
+<div class="code-block" id="codeBlock">
+  <h1># Deck Shuffle</h1>
+  <pre>
+import random
+
+def shuffle_deck(deck):
+    for i in range(len(deck)-1, 0, -1):
+        j = random.randint(0, i)
+        deck[i], deck[j] = deck[j], deck[i]
+    return deck
+
+# Create a deck of cards
+deck = [f'{rank}{suit}' for suit in '♠♥♦♣' for rank in 'A23456789TJQK']
+
+# Shuffle the deck
+shuffled_deck = shuffle_deck(deck)
+print(shuffled_deck)
+  </pre>
+  <span class="notification" id="notification">Copied!</span>
+</div>
+
+
+<div class="code-block" id="codeBlock">
+  <h1># Honai tower</h1>
+  <pre>
+def hanoi(n, source, target, auxiliary):
+    if n == 1:
+        print(f"Move disk 1 from {source} to {target}")
+        return
+    hanoi(n-1, source, auxiliary, target)
+    print(f"Move disk {n} from {source} to {target}")
+    hanoi(n-1, auxiliary, target, source)
+
+# Test with 3 disks
+hanoi(3, 'A', 'C', 'B')
+  </pre>
+  <span class="notification" id="notification">Copied!</span>
+</div>
+
+
+<div class="code-block" id="codeBlock">
+  <h1># Constraint satisfaction</h1>
+  <pre>
+class CSP:
+    def __init__(self, N):
+        self.N = N
+        self.board = [[0 for _ in range(N)] for _ in range(N)]
+
+    # Function to check if a queen can be placed on board[row][col]
+    def is_safe(self, row, col):
+        # Check this row on the left side
+        for i in range(col):
+            if self.board[row][i] == 1:
+                return False
+
+        # Check upper diagonal on the left side
+        for i, j in zip(range(row, -1, -1), range(col, -1, -1)):
+            if self.board[i][j] == 1:
+                return False
+
+        # Check lower diagonal on the left side
+        for i, j in zip(range(row, self.N, 1), range(col, -1, -1)):
+            if self.board[i][j] == 1:
+                return False
+
+        return True
+
+    # The recursive utility function to solve the N-Queens problem
+    def solve_csp_util(self, col):
+        # If all queens are placed, return True
+        if col >= self.N:
+            return True
+
+        # Try placing queens in all rows one by one
+        for i in range(self.N):
+            if self.is_safe(i, col):
+                # Place this queen
+                self.board[i][col] = 1
+
+                # Recursively place rest of the queens
+                if self.solve_csp_util(col + 1):
+                    return True
+
+                # If placing the queen doesn't lead to a solution, backtrack
+                self.board[i][col] = 0
+
+        # If the queen cannot be placed in any row in this column, return False
+        return False
+
+    # This function solves the N-Queens problem using backtracking
+    def solve_csp(self):
+        if not self.solve_csp_util(0):
+            print("No solution exists")
+            return False
+
+        # Print the solution
+        self.print_solution()
+        return True
+
+    # A utility function to print the solution (chessboard with queens placed)
+    def print_solution(self):
+        for i in range(self.N):
+            for j in range(self.N):
+                print("Q" if self.board[i][j] == 1 else ".", end=" ")
+            print()
+
+
+# Driver code to test the CSP solver for N-Queens
+if __name__ == "__main__":
+    N = 8  # Example for 8-Queens problem
+    csp_solver = CSP(N)
+    csp_solver.solve_csp()
+  </pre>
+  <span class="notification" id="notification">Copied!</span>
+</div>
+
+
+<div class="code-block" id="codeBlock">
+  <h1># Associative</h1>
+  <pre>
+def associative_law_addition(a, b, c):
+    left_side = (a + b) + c
+    right_side = a + (b + c)
+    return left_side, right_side
+
+def associative_law_multiplication(a, b, c):
+    left_side = (a * b) * c
+    right_side = a * (b * c)
+    return left_side, right_side
+
+# Test values
+a, b, c = 1, 2, 3
+
+add_results = associative_law_addition(a, b, c)
+mult_results = associative_law_multiplication(a, b, c)
+
+print("Addition Results:", add_results)
+print("Multiplication Results:", mult_results)
+  </pre>
+  <span class="notification" id="notification">Copied!</span>
+</div>
+
+
+<div class="code-block" id="codeBlock">
+  <h1># BFS</h1>
+  <pre>
+from collections import deque
+
+def bfs(graph, start):
+    # Initialize a queue with the starting node
+    queue = deque([start])
+    visited = set()  # To keep track of visited nodes
+
+    while queue:
+        # Get the next node from the queue
+        node = queue.popleft()
+
+        # If the node is not visited, process it
+        if node not in visited:
+            print(node, end=" ")  # Process the node (print in this case)
+            visited.add(node)  # Mark it as visited
+
+            # Add all unvisited neighbors to the queue
+            for neighbor in graph[node]:
+                if neighbor not in visited:
+                    queue.append(neighbor)
+
+# Example graph represented as an adjacency list
+graph = {
+    'A': ['B', 'C'],
+    'B': ['D', 'E'],
+    'C': ['F'],
+    'D': [],
+    'E': ['F'],
+    'F': []
+}
+
+# Call BFS starting from node 'A'
+print("BFS traversal starting from node A:")
+bfs(graph, 'A')
+  </pre>
+  <span class="notification" id="notification">Copied!</span>
+</div>
+
+
+<div class="code-block" id="codeBlock">
+  <h1># Depth First Search (DFS) algorithm
+</h1>
+  <pre>
+# Depth First Search (DFS) algorithm
+def dfs(graph, node, visited):
+    if node not in visited:
+        print(node, end=" ")  # Process the node
+        visited.add(node)
+        for neighbor in graph[node]:
+            dfs(graph, neighbor, visited)
+
+# Example graph as an adjacency list
+graph = {
+    'A': ['B', 'C'],
+    'B': ['D', 'E'],
+    'C': ['F'],
+    'D': [],
+    'E': [],
+    'F': []
+}
+
+visited = set()  # To keep track of visited nodes
+dfs(graph, 'A', visited)
+
+
+  </pre>
+  <span class="notification" id="notification">Copied!</span>
+</div>
+<script>
+  // Select all code blocks
+  const codeBlocks = document.querySelectorAll('.code-block');
+
+  codeBlocks.forEach((block) => {
+    block.addEventListener('click', () => {
+      const textToCopy = block.querySelector('pre').innerText;
+      const notification = block.querySelector('.notification');
+
+      // Copy to clipboard
+      navigator.clipboard.writeText(textToCopy).then(() => {
+        // Show notification
+        notification.style.display = 'inline-block';
+        setTimeout(() => {
+          notification.style.display = 'none';
+        }, 1500);
+      }).catch(err => {
+        console.error('Failed to copy: ', err);
+      });
+    });
+  });
+</script>
+
+
+</body>
+</html>
